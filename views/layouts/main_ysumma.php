@@ -28,7 +28,11 @@ YsummaAsset::register($this);
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.html">YSUMMA</a>
+                    <a class="navbar-brand" href="index.html">
+                        <center>
+                        <img src="<?php echo Yii::getAlias('@web'); ?>/img/ysumma_2.png" width="260" height="50" />
+                        </center>
+                    </a>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <!-- /.dropdown -->

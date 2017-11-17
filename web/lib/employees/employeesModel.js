@@ -2,8 +2,9 @@ var employeesModel = function () {
     
     var self = {};
     
-    self.editEmployee = function(id){
-        
+    self.deleteEmployee = function(id){
+        $("#employee_delete").val(id);
+        $("#modal_delete_employees").modal("show");
     };
     
     return self;

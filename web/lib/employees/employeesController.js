@@ -18,6 +18,10 @@ $(document).on("ready", function () {
     $("#btn_modal_employees").click(function () {
         $("#modal_employees").modal("show");
     });
+    
+    $("#btn_delete_employee").click(function(){
+        $("#frm_delete_employees").submit();
+    });
 
     $('#frm_employees').bootstrapValidator({
         feedbackIcons: {
@@ -62,6 +66,7 @@ $(document).on("ready", function () {
         }
     }).on('success.form.bv', function(e) {
         e.preventDefault();
+        var msg = "";
         $.ajax({
             type: 'POST',
             data: $("#frm_employees").serialize(),
@@ -69,18 +74,14 @@ $(document).on("ready", function () {
             success: function (response) {
                 var data = JSON.parse(response);
                 if(!data.success){
-                    var msg = getMessagesDanger(data.response);
+                    msg = getMessagesDanger(data.response);
                     $("#messages").html(msg);
                 }else{
-                    location.reload();
+                    msg = getMessagesSuccess(data.response);
+                    $("#messages").html(msg);
                 }
             }
         });
-    });
-
-    $(".edit").click(function(){
-        console.log(this);
-        self.editEmployee();
     });
     
 });

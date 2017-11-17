@@ -13,6 +13,7 @@ use yii\filters\ContentNegotiator;
 class EmployeesController extends Controller{
     
     private $_listEmployees = [];
+    private $_employee = null;
     public $enableCsrfValidation = false;
     
     public function behaviors(){
@@ -42,6 +43,17 @@ class EmployeesController extends Controller{
         ]);
     }
     
+    public function actionView(){
+        $employeesService = new EmployeesService();
+        $id_employee = isset($_GET["employee"]) && !empty($_GET["employee"]) ? $_GET["employee"]:false;
+        if($id_employee){
+            $this->_employee = $employeesService->getEmployee($id_employee);
+            return $this->render('update',["employee" => $this->_employee]);
+        }else{
+            return $this->render('create');
+        }
+    }
+    
     public function actionSave(){
         $response = [];
         $employeesService = new EmployeesService();
@@ -62,6 +74,32 @@ class EmployeesController extends Controller{
             $response = ["success" => false , "response" => "Error"];
         }
         return json_encode($response);
+    }
+    
+    public function actionUpdate(){
+        $response = [];
+        $employeesService = new EmployeesService();
+        if (Yii::$app->request->post()) {
+            $data = Yii::$app->request->post();
+            if(sizeof($data) > 0 && !empty($data)){
+                $result = $employeesService->updateEmployee($data);
+                $response = ($result["success"]) ? ["success" => true , "response" => "Operación Correcta"] : ["success" => false , "response" => "Error"];
+            }else{
+                $response = ["success" => false , "response" => "Error"];
+            }
+        }else{
+            $response = ["success" => false , "response" => "Error"];
+        }
+        return json_encode($response);
+    }
+    
+    public function actionDelete(){
+        $employeesService = new EmployeesService();
+        $id_employee = isset($_POST["employee_delete"]) && !empty($_POST["employee_delete"]) ? $_POST["employee_delete"]:false;
+        if($id_employee){
+            $employeesService->deleteEmployee($id_employee);
+        }
+        return $this->redirect(['employees/index']);
     }
     
 }
